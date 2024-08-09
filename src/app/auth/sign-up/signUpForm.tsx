@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import { TextInput } from '../../../components/TextInput'
 import { Button } from '../../../components/Button'
 import { useState } from 'react'
+import { handleSignUp } from '@/lib/cognitoActions'
 interface FormValues {
     name: string;
     email: string;
@@ -20,21 +21,8 @@ export default function SignUpForm() {
   const [loading, setLoading] = useState(false)
   const onSubmit = async (data:FormValues) => {
     setLoading(true); // Assuming you want to show loading status during the delay
-    try {
-      // Wrap setTimeout in a promise
-      await new Promise<void>((resolve) => {
-        setTimeout(() => {
-          console.log(data);
-          resolve(); // Resolve the promise after the timeout
-        }, 4000); // 4000 ms = 4 seconds
-      });
-      
-      console.log('Done');
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false); // Ensure loading status is reset after the operation completes
-    }
+    handleSignUp(data)
+    setLoading(false);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
