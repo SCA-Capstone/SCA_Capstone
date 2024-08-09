@@ -4,6 +4,7 @@ import { confirmSignUp, type ConfirmSignUpInput } from 'aws-amplify/auth';
 import { signIn, type SignInInput } from 'aws-amplify/auth';
 import { redirect } from "next/navigation";
 import { resendSignUpCode } from 'aws-amplify/auth';
+import { autoSignIn } from 'aws-amplify/auth';
 
 type SignUpParameters = {
   password: string;
@@ -35,7 +36,7 @@ export async function handleSignUp({
   } catch (error) {
     console.log('error signing up:', error);
   }
-  redirect("/auth/confirm-signup");
+  redirect("/auth/confirm-email");
 }
 
 export async function handleSignUpConfirmation({
@@ -47,10 +48,11 @@ export async function handleSignUpConfirmation({
       username:email,
       confirmationCode:code
     });
-    await resendSignUpCode({username:email});
+    autoSignIn()
   } catch (error) {
     console.log('error confirming sign up', error);
   }
+  redirect('/auth/sign-in')
 }
 export async function handleSignIn({ email, password }: {email:string, password:string}) {
     let redirectLink = "/dashboard";
