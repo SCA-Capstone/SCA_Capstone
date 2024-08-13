@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useForm} from 'react-hook-form'
 import { TextInput } from '@/components/TextInput'
 import { Button } from '@/components/Button'
+import { handleLogin } from '@/lib/supabase-auth-actions'
 interface FormValues {
   email: string;
   password: string;
@@ -17,7 +18,7 @@ export default function Form() {
   const onSubmit = async (data:FormValues) => {
     setLoading(true); // Assuming you want to show loading status during the delay
     // handleSignIn(data)
-    console.log(data)
+    handleLogin(data)
     setLoading(false);
   };
   
