@@ -17,6 +17,7 @@
     NEXT_PUBLIC_SUPABASE_ANON_KEY= supabase_api_key
     ```
 7) You should be all set for auth
+8) Random
 
 
 
