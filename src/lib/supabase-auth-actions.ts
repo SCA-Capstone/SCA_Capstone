@@ -9,8 +9,8 @@ export async function handleLogin({email,password}:{email:string, password:strin
   if (error) {
     redirect('/error')
   }
-  revalidatePath('/', 'layout')
-  redirect('/')
+  revalidatePath('/dashboard', 'layout')
+  redirect('/dashboard')
 }
 export async function handleSignup({email,password,name}:{email:string, password:string,name:string}) {
   const supabase = createClient()
@@ -20,4 +20,13 @@ export async function handleSignup({email,password,name}:{email:string, password
   }
   revalidatePath('/', 'layout')
   redirect('/')
+}
+export async function handleSignout({}) {
+  const supabase = createClient()
+  const { error } = await supabase.auth.signOut()
+  if (error) {
+    redirect('/error')
+  }
+  revalidatePath('/', 'layout')
+  redirect('/auth/sign-in')
 }
