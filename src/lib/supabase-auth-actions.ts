@@ -12,9 +12,9 @@ export async function handleLogin({email,password}:{email:string, password:strin
   revalidatePath('/', 'layout')
   redirect('/')
 }
-export async function handleSignup({email,password}:{email:string, password:string}) {
+export async function handleSignup({email,password,name}:{email:string, password:string,name:string}) {
   const supabase = createClient()
-  const { error } = await supabase.auth.signUp({email,password})
+  const { error } = await supabase.auth.signUp({email,password,options:{data:{name}}})
   if (error) {
     redirect('/error')
   }

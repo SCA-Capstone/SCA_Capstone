@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { handleSignup } from '@/lib/supabase-auth-actions'
 
 interface FormValues {
-    // name: string;
+    name: string;
     email: string;
     password: string;
     // confirm_password:string;
@@ -13,7 +13,7 @@ interface FormValues {
 export default function Form() {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      // name:"",
+      name:"",
       email: "",
       password:"",
       // confirm_password:"",
@@ -27,7 +27,7 @@ export default function Form() {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* <TextInput label="Full Name" name="name" type="text" control={control} /> */}
+      <TextInput label="Full Name" name="name" type="text" control={control} />
       <TextInput label="Email Address" name="email" type="email" control={control}/>
       <TextInput label="Password" name="password" type="password" control={control}/>
       {/* <TextInput label="Confirm Password" name="confirm_password" type="password" control={control}/> */}
