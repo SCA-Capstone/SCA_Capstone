@@ -1,36 +1,42 @@
-import { useForm } from 'react-hook-form'
-import { TextInput } from '../../../components/TextInput'
-import { Button } from '../../../components/Button'
-import { useState } from 'react'
+"use client";
+import {
+  ExclamationCircleIcon,
+} from "@heroicons/react/24/outline";
+import { useFormState, useFormStatus } from "react-dom";
+import { handleSignUp } from "@/lib/cognito_actions";
+import { TextInput } from "@/components/TextInput";
 
-interface FormValues {
-    name: string;
-    email: string;
-    password: string;
-    confirm_password:string;
-  }
-export default function Form() {
-  const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: {
-      name:"",
-      email: "",
-      password:"",
-      confirm_password:"",
-    },
-  })
-  const [loading, setLoading] = useState(false)
-  const onSubmit = async (data:FormValues) => {
-    setLoading(true); // Assuming you want to show loading status during the delay
-    console.log(data)
-    setLoading(false);
-  };
+export default function SignUpForm() {
+  const [errorMessage, dispatch] = useFormState(handleSignUp, undefined);
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <TextInput label="Full Name" name="name" type="text" control={control} />
-      <TextInput label="Email Address" name="email" type="email" control={control}/>
-      <TextInput label="Password" name="password" type="password" control={control}/>
-      <TextInput label="Confirm Password" name="confirm_password" type="password" control={control}/>
-      <Button loading={loading} type="submit" buttonType="primary" label="Create Account"/>
-  </form>
-  )
+    <form action={dispatch} className="space-y-3">
+        <TextInput label="Name" placeholder="Full Name" type="text" name="name"/>
+        <TextInput label="Email" placeholder="Email Address" type="email" name="email"/>
+        <TextInput label="Password" placeholder="Password" type="password" name="password"/>
+        <SignUpButton />
+        <div
+          className="flex h-8 space-x-2"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {errorMessage && (
+            <>
+              <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+              <p className="text-xs font-medium text-red-500">{errorMessage}</p>
+            </>
+          )}
+        </div>
+    </form>
+  );
+}
+
+function SignUpButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+    className= "flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6  focus-visible:outline focus-visible:outline-2 bg-sky-600  shadow-sm hover:bg-sky-500 focus-visible:outline-sky-500 text-white ocus-visible:outline-offset-2"
+    aria-disabled={pending}>
+      Create Account
+    </button>
+  );
 }
