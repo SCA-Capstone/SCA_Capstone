@@ -1,7 +1,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server'
 
 const user = {
   name: 'Tom Cook',
@@ -26,13 +25,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default async function Page() {
-  // const supabase = createClient()
-  // const { data, error } = await supabase.auth.getUser()
-  // console.log(data)
-  // if (error || !data?.user) {
-  //   redirect('/auth/sign-in')
-  // }
+export default function Page() {
   return (
     <>
       <div className="min-h-full">
