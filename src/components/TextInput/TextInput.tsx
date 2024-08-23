@@ -15,7 +15,7 @@ export default function TextInput({ label, name, type, showForgotPassword, place
               Password
             </label>
             <div className="text-sm">
-              <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+              <a href="/auth/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-500">
                 Forgot password?
               </a>
             </div>

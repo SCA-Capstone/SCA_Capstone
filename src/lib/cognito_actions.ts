@@ -5,6 +5,9 @@ import {
   signIn,
   signOut,
   resendSignUpCode,
+  autoSignIn,
+  resetPassword,
+  confirmResetPassword
 } from "aws-amplify/auth";
 import { getErrorMessage } from "@/utils/get-error-message";
 
@@ -63,6 +66,7 @@ export async function handleConfirmSignUp(
       username: String(formData.get("email")),
       confirmationCode: String(formData.get("code")),
     });
+    autoSignIn();
   } catch (error) {
     return getErrorMessage(error);
   }
@@ -98,5 +102,32 @@ export async function handleSignOut() {
   } catch (error) {
     console.log(getErrorMessage(error));
   }
-  redirect("/auth/login");
+  redirect("/auth/sign-in");
+}
+export async function handleResetPassword(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    await resetPassword({ username: String(formData.get("email")) });
+  } catch (error) {
+    return getErrorMessage(error);
+  }
+  redirect("/auth/forgot-password/confirm");
+}
+
+export async function handleConfirmResetPassword(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    await confirmResetPassword({
+      username: String(formData.get("email")),
+      confirmationCode: String(formData.get("code")),
+      newPassword: String(formData.get("password")),
+    });
+  } catch (error) {
+    return getErrorMessage(error);
+  }
+  redirect("/auth/sign-in");
 }
