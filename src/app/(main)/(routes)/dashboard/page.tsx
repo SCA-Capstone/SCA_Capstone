@@ -1,7 +1,9 @@
+'use client'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server'
+import LogoutForm from './logout_form'
+import useAuthUser from '../hooks/auth_user'
 
 const user = {
   name: 'Tom Cook',
@@ -17,22 +19,17 @@ const navigation = [
   { name: 'Reports', href: '#', current: false },
 ]
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Your Profile', href: 'dashboard/profile' },
+  { name: 'Settings', href: 'dashboard/settings' },
+  
 ]
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default async function Page() {
-  // const supabase = createClient()
-  // const { data, error } = await supabase.auth.getUser()
-  // console.log(data)
-  // if (error || !data?.user) {
-  //   redirect('/auth/sign-in')
-  // }
+export default function Page() {
+  const user = useAuthUser();
   return (
     <>
       <div className="min-h-full">
@@ -82,7 +79,7 @@ export default async function Page() {
                       <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <img alt="" src={user.imageUrl} className="h-8 w-8 rounded-full" />
+                        <img alt="" src={""} className="h-8 w-8 rounded-full" />
                       </MenuButton>
                     </div>
                     <MenuItems
@@ -99,6 +96,16 @@ export default async function Page() {
                             </a>
                         </MenuItem>
                       ))}
+                      {user?.isAdmin && <MenuItem>
+                        <a
+                          href={'/dashboard/admin'}
+                          className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                              Admin Page
+                        </a>
+                        </MenuItem>}
+                      <MenuItem key={'Sign Out'}>
+                        <LogoutForm/>
+                      </MenuItem>
                     </MenuItems>
                   </Menu>
                 </div>
@@ -135,11 +142,11 @@ export default async function Page() {
             <div className="border-t border-gray-700 pb-3 pt-4">
               <div className="flex items-center px-5">
                 <div className="flex-shrink-0">
-                  <img alt="" src={user.imageUrl} className="h-10 w-10 rounded-full" />
+                  <img alt="" src={user?.imageUrl} className="h-10 w-10 rounded-full" />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                  <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                  <div className="text-base font-medium leading-none text-white">{user?.name}</div>
+                  <div className="text-sm font-medium leading-none text-gray-400">{user?.email}</div>
                 </div>
                 <button
                   type="button"

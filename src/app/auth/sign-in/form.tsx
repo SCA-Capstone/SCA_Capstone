@@ -1,33 +1,41 @@
-import { useState } from 'react'
-import { useForm} from 'react-hook-form'
-import { TextInput } from '@/components/TextInput'
-import { Button } from '@/components/Button'
-import { handleLogin } from '@/lib/supabase-auth-actions'
-interface FormValues {
-  email: string;
-  password: string;
-}
-export default function Form() {
-  const [loading, setLoading] = useState(false)
-  const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: {
-      email: "",
-      password:"",
-    },
-  })
-  const onSubmit = async (data:FormValues) => {
-    setLoading(true); // Assuming you want to show loading status during the delay
-    // handleSignIn(data)
-    handleLogin(data)
-    setLoading(false);
-  };
-  
-    
+"use client";
+import {
+  ExclamationCircleIcon,
+} from "@heroicons/react/24/outline";
+import { useFormState, useFormStatus } from "react-dom";
+import { handleSignIn } from "@/lib/cognito_actions";
+import { TextInput } from "@/components/TextInput";
+
+export default function SignUpForm() {
+  const [errorMessage, dispatch] = useFormState(handleSignIn, undefined);
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <TextInput label="Email Address" name="email" type="email" control={control}/>
-      <TextInput label="Password" name="password" type="password" showForgotPassword control={control}/>
-      <Button loading={loading} type="submit" buttonType="primary" label="Sign In"/>
+    <form action={dispatch} className="space-y-3">
+        <TextInput label="Email" placeholder="Email Address" type="email" name="email"/>
+        <TextInput label="Password" placeholder="Password" type="password" name="password" showForgotPassword/>
+        <SignInButton />
+        <div
+          className="flex h-8 space-x-2"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {errorMessage && (
+            <>
+              <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+              <p className="text-xs font-medium text-red-500">{errorMessage}</p>
+            </>
+          )}
+        </div>
     </form>
-  )
+  );
+}
+
+function SignInButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+    className= "flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6  focus-visible:outline focus-visible:outline-2 bg-sky-600  shadow-sm hover:bg-sky-500 focus-visible:outline-sky-500 text-white ocus-visible:outline-offset-2"
+    aria-disabled={pending}>
+      Create Account
+    </button>
+  );
 }

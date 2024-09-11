@@ -26,7 +26,7 @@ export default function Button ({loading,type,buttonType, label}:ButtonProps){
           type={type}
           className={[
             getStyle(),
-            "flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6  focus-visible:outline focus-visible:outline-2 f "
+            "flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6  focus-visible:outline focus-visible:outline-2"
           ].join(' ')}
         >
           {loading? "Loading...": label}
