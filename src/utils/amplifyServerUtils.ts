@@ -1,9 +1,11 @@
 import { NextServer,createServerRunner } from '@aws-amplify/adapter-nextjs';
-import config from '../amplifyconfiguration.json';
+import { authConfig } from '@/components/ConfigureAmplifyClientSide/ConfigureAmplifyClientSide';
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth/server";
 
 export const { runWithAmplifyServerContext } = createServerRunner({
-  config
+  config: {
+    Auth: authConfig,
+  },
 });
 export async function authenticatedUser(context: NextServer.Context) {
   return await runWithAmplifyServerContext({
