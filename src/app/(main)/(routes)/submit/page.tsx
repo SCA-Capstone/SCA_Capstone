@@ -57,7 +57,6 @@ const SubmissionPage = () => {
         const uniqueID = uniqid();
         const randNumber = Math.floor(Math.random() * 1000);
         const created_at = new Date().toISOString();
-        const isFiles = files && Object.keys(files).length > 0 ? true : false
         const randNumber2 = Math.floor(Math.random() * 1000);
         // grab all the global states and submit them to the backend
         const formData = {
@@ -67,27 +66,8 @@ const SubmissionPage = () => {
             email: email,
             company: company,
             userId: randNumber2,
-            files: isFiles,
+            files: files,
         }
-
-        // upload files to supabase
-        const {
-            data: filesData,
-            error: filesError
-        } = await supabaseClient
-            .storage
-            .from('submission-files')
-            .upload(`submission-${randNumber}-${uniqueID}.zip`, files[0], {
-                cacheControl: '3600',
-                upsert: false,
-            });
-
-        if (filesError) {
-            setIsLoading(false);
-            return toast.error('Error uploading files');
-        } else console.log(' it worked')
-
-        console.log("form data", formData);
         // api action
         try {
             fetch('/api/submit', {
