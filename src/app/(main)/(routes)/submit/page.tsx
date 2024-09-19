@@ -1,16 +1,21 @@
 "use client";
 
+import uniqid from 'uniqid';
 import { useForm } from "@/hooks/useForm";
 import FormQuestion from "./_components/FormQuestion";
 import { ReceiptRussianRuble } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useState } from 'react';
 
 const SubmissionPage = () => {
 
     const { name, setName, email, setEmail, company, setCompany, files, setFiles } = useForm();
+    const [isLoading, setIsLoading] = useState(false);
     // convert name, email, company, files to json
     const router = useRouter();
+    const supabaseClient = useSupabaseClient();
 
     const questions = [
         {
@@ -39,24 +44,48 @@ const SubmissionPage = () => {
         }
     ]
 
-    const onHandleSubmit = (e: any) => {
+    const onHandleSubmit =  async (e: any) => {
         e.preventDefault();
         // check to see if any of the fields are empty
-        console.log("name", name);
-        console.log("email", email);
-        console.log("company", company);
-        console.log("files", files);
         if (!name || !email || !company ) {
             toast.error('Please fill out all fields');
             return;
         }
+        
+        setIsLoading(true);
+
+        const uniqueID = uniqid();
+        const randNumber = Math.floor(Math.random() * 1000);
+        const created_at = new Date().toISOString();
+        const isFiles = files && Object.keys(files).length > 0 ? true : false
+        const randNumber2 = Math.floor(Math.random() * 1000);
         // grab all the global states and submit them to the backend
         const formData = {
+            id: randNumber,
+            created_at: created_at,
             name: name,
             email: email,
             company: company,
-            files: files
+            userId: randNumber2,
+            files: isFiles,
         }
+
+        // upload files to supabase
+        const {
+            data: filesData,
+            error: filesError
+        } = await supabaseClient
+            .storage
+            .from('submission-files')
+            .upload(`submission-${randNumber}-${uniqueID}.zip`, files[0], {
+                cacheControl: '3600',
+                upsert: false,
+            });
+
+        if (filesError) {
+            setIsLoading(false);
+            return toast.error('Error uploading files');
+        } else console.log(' it worked')
 
         console.log("form data", formData);
         // api action

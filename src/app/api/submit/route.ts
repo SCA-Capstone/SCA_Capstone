@@ -1,25 +1,31 @@
-
-
-// import mongodb, supabase, aws rds, etc.
-// import formData model (typescript interface schema)
 import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 
-export async function POST(req: any) {
-    const { name, email, company, files } = req.body;
-    // validate the form data
-    // check if the user is logged in / has permission to submit
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseClient = createClient(supabaseUrl as string, supabaseKey as string);
 
-    // connect to the database
-        // await conntectdb();
-    // insert the form data into the database
-        // const newForm = await Form.create({ name, email, company, files });
-        // const _id = newForm._id; 
-    // response
-    return NextResponse.json({
-        message: "Form submitted successfully",
-        // form: { _id: `${_id}` }
-        }, 
-        { status: 201 });
-    // send a confirmation email to the user
-        // await sendEmail(email, "Form submitted successfully", "Thank you for submitting your form");
+export async function POST(req: Request) {
+    try {
+        const { id, created_at, name, email, company, userId, files } = await req.json();
+
+        console.log('Form data:', { id, created_at, name, email, company, userId, files });
+        console.log('supabaseUrl: ', supabaseUrl);
+        console.log('supabaseKey: ', supabaseKey);
+
+        // Insert form data into the 'job-submissions' table
+        const { data, error } = await supabaseClient
+            .from('job-submissions')
+            .insert([{ id, created_at, name, email, company, userId, files }]);
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        return NextResponse.json({ message: 'Form submitted successfully' }, { status: 201 });
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        return NextResponse.json({ message: errorMessage }, { status: 500 });
+    }
 }
