@@ -19,7 +19,7 @@ export async function POST(req: Request) {
                 const { data: fileData, error: fileError } = await supabaseClient
                     .storage
                     .from('submission-files')
-                    .upload(`submission-${id}-user${userId}(${i})`, file as Blob);
+                    .upload(`submission-${id}`, file as Blob);
                 
                 if (fileError) {
                     throw new Error(fileError.message);
