@@ -1,6 +1,6 @@
 // pages/api/deleteRecord.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { supabaseServer } from '../../lib/supabaseServer'; // Server-side instance
+import { supabaseServer } from '../../../lib/supabaseServer'; // Server-side instance
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'DELETE') {
