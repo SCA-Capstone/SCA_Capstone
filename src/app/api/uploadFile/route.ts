@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { supabaseServer } from '../../lib/supabaseServer';
+import { supabaseServer } from '../../../lib/supabaseServer';
 import { nanoid } from 'nanoid';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
