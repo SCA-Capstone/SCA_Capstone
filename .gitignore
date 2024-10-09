@@ -3,6 +3,9 @@
 # supabase project password
 password.txt
 
+#Windows Script to Run
+run-next-dev.sh
+
 # dependencies
 /node_modules
 /.pnp
