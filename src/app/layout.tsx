@@ -6,6 +6,7 @@ import { EdgeStoreProvider } from "@/lib/edgestore";
 import { Toaster } from "sonner";
 import Footer from "@/components/Footer";
 import SupabaseProvider from "@/providers/SupabaseProvider";
+import { ConfigureAmplifyClientSide } from "@/components/ConfigureAmplifyClientSide";
 
 const font = Figtree({ subsets: ["latin"] });
 
@@ -25,9 +26,10 @@ export default function RootLayout({
           <EdgeStoreProvider>
             <Toaster position="bottom-center" />
             <SupabaseProvider>
-              <Navbar />
+              {/* <Navbar /> */}
+              <ConfigureAmplifyClientSide/>
                 {children}
-              <Footer />
+              {/* <Footer /> */}
             </SupabaseProvider>
           </EdgeStoreProvider>
         </body>

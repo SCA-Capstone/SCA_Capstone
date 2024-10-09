@@ -33,7 +33,7 @@ function SignInButton() {
   const { pending } = useFormStatus();
   return (
     <button
-    className= "flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6  focus-visible:outline focus-visible:outline-2 bg-sky-600  shadow-sm hover:bg-sky-500 focus-visible:outline-sky-500 text-white ocus-visible:outline-offset-2"
+    className= "flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6  focus-visible:outline focus-visible:outline-2 bg-[#45503B] shadow-sm hover:bg-[#6C7C59] text-white ocus-visible:outline-offset-2"
     aria-disabled={pending}>
       Create Account
     </button>

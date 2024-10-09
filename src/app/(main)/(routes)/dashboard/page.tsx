@@ -3,7 +3,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { redirect } from 'next/navigation'
 import LogoutForm from './logout_form'
-import useAuthUser from '../hooks/auth_user'
+import useAuthUser from '@/app/hooks/auth_user';
 
 const user = {
   name: 'Tom Cook',

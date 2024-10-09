@@ -11,17 +11,17 @@ export default function TextInput({ label, name, type, showForgotPassword, place
       {showForgotPassword ?
         (
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900" >
+            <label htmlFor="password" className="block text-sm font-semibold leading-6 text-[#45503B]" >
               Password
             </label>
             <div className="text-sm">
-              <a href="/auth/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-500">
+              <a href="/auth/forgot-password" className="font-semibold text-[#45503B] hover:text-[#8A9A5B]">
                 Forgot password?
               </a>
             </div>
           </div>
         ) : (
-          <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+          <label htmlFor="email" className="block text-sm font-bold leading-6 text-[#45503B]">
             {label}
           </label>
         )}
@@ -32,7 +32,7 @@ export default function TextInput({ label, name, type, showForgotPassword, place
           type={type}
           required
           placeholder={placeholder}
-          className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className="block w-full border-[1px] border-[#45503B] rounded-md px-2 py-1.5 text-[#CAD2C5] shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
         />
       </div>
     </div>

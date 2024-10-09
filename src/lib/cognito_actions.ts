@@ -66,7 +66,7 @@ export async function handleConfirmSignUp(
       username: String(formData.get("email")),
       confirmationCode: String(formData.get("code")),
     });
-    autoSignIn();
+    // autoSignIn();
   } catch (error) {
     return getErrorMessage(error);
   }

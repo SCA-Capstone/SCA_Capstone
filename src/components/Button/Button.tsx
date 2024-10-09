@@ -7,10 +7,10 @@ interface ButtonProps {
 export default function Button ({loading,type,buttonType, label}:ButtonProps){
     const getStyle = ():string | undefined =>{
         if (loading){
-            return 'bg-sky-200 focus-visible:outline-indigo-300 text-white ocus-visible:outline-offset-2'
+            return 'bg-[#45503B] focus-visible:outline-indigo-300 text-white ocus-visible:outline-offset-2'
         }
         else if (buttonType === 'primary'){
-            return 'bg-sky-600  shadow-sm hover:bg-sky-500 focus-visible:outline-sky-500 text-white ocus-visible:outline-offset-2'
+            return 'bg-[#45503B]  shadow-sm hover:bg-[#6C7C59] focus-visible:outline-sky-500 text-white ocus-visible:outline-offset-2'
         }
         else if (buttonType === 'secondary'){
             return 'shadow-sm focus-visible:outline-sky-500 border border-sky-600 text-sky-600 hover:text-sky-500 ocus-visible:outline-offset-2'
