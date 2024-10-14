@@ -35,7 +35,7 @@ function SignInButton() {
     <button
     className= "flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6  focus-visible:outline focus-visible:outline-2 bg-[#45503B] shadow-sm hover:bg-[#6C7C59] text-white ocus-visible:outline-offset-2"
     aria-disabled={pending}>
-      Create Account
+      Sign In
     </button>
   );
 }
