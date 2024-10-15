@@ -6,15 +6,19 @@ export async function middleware(request: NextRequest) {
   const user = await authenticatedUser({ request, response });
 
   const isOnDashboard = request.nextUrl.pathname.startsWith("/dashboard");
-  const isOnAdminArea =
-    request.nextUrl.pathname.startsWith("/dashboard/admins");
+  const isOnAdminArea = request.nextUrl.pathname.startsWith("/dashboard/admins");
+  const isOnSignIn = request.nextUrl.pathname.startsWith("/auth");
 
-  if (isOnDashboard) {
-    if (!user)
-      return NextResponse.redirect(new URL("/auth/sign-in", request.nextUrl));
-    if (isOnAdminArea && !user.isAdmin)
+  if (user){
+    if (isOnAdminArea && !user?.isAdmin || isOnSignIn){
       return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
-    return response;
+    }
+  }
+  else {
+    if (isOnDashboard){
+      return NextResponse.redirect(new URL("/auth/sign-in", request.nextUrl));
+    }
+    
   }
 }
 
