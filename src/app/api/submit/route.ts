@@ -8,26 +8,45 @@ const supabaseClient = createClient(supabaseUrl as string, supabaseKey as string
 export async function POST(req: Request) {
     try {
         const { id, created_at, name, email, company, userId, files } = await req.json();
+        console.log('files', files);
         const isFiles = files && Object.keys(files).length > 0 ? true : false
+        let newFiles = files.FileList;
 
         // upload files to supabase (storage in submission-files bucket)
         // upload each file separately
-        if (isFiles) {
-            const filesArray = Object.values(files);
-            let i = 0;
-            for (const file of filesArray) {
-                const { data: fileData, error: fileError } = await supabaseClient
-                    .storage
-                    .from('submission-files')
-                    .upload(`submission-${id}`, file as Blob);
-                
-                if (fileError) {
-                    throw new Error(fileError.message);
-                } else i++;
-            }
 
+        /* EXAMPLE
+        const avatarFile = event.target.files[0]
+        const { data, error } = await supabase
+        .storage
+        .from('avatars')
+        .upload('public/avatar1.png', avatarFile, {
+            cacheControl: '3600',
+            upsert: false
+        })
+        */
+        // console.log('file outside', files);
+        // if (isFiles) {
+        //     for (const key in files) {
+        //         if (files.hasOwnProperty(key)) {
+        //             const file = files[key];
+        //             console.log('KEY', key);
+        //             console.log('FILE', file);
 
-        }
+        //             const { data: fileData, error: fileError } = await supabaseClient
+        //                 .storage
+        //                 .from('submission-files')
+        //                 .upload(`submission-${id}/${file.name}`, file, {
+        //                     cacheControl: '3600',
+        //                     upsert: false
+        //                 });
+        //             if (fileError) {
+        //                 throw new Error(fileError.message);
+        //             }
+        //         }
+        //     }
+        // }
+
 
 
         console.log('Form data:', { id, created_at, name, email, company, userId, files });
