@@ -7,9 +7,10 @@ import { ReceiptRussianRuble } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SubmissionPage = () => {
+
 
     const { name, setName, email, setEmail, company, setCompany, files, setFiles } = useForm();
     const [isLoading, setIsLoading] = useState(false);
@@ -58,6 +59,32 @@ const SubmissionPage = () => {
         const randNumber = Math.floor(Math.random() * 1000);
         const created_at = new Date().toISOString();
         const randNumber2 = Math.floor(Math.random() * 1000);
+
+        // upload files to supabase storage
+        // for some reason the files when transferred as json to the backend are being null
+        // so we need to upload the files here
+        console.log(' uploading files, files:', files);
+        for (const key in files) {
+            if (files.hasOwnProperty(key)) {
+                const file = files[key];
+                console.log('KEY', key);
+                console.log('FILE', file);
+
+                const { data: fileData, error: fileError } = await supabaseClient
+                    .storage
+                    .from('submission-files')
+                    .upload(`user-${randNumber}-submission-${randNumber2}/${file.name}`, file, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+                if (fileError) {
+                    console.error('Error uploading file:', fileError);
+                    return;
+                }
+                console.log('Files were uploaded:', fileData);
+            }
+        }
+
         // grab all the global states and submit them to the backend
         const formData = {
             id: randNumber,
@@ -68,6 +95,8 @@ const SubmissionPage = () => {
             userId: randNumber2,
             files: files,
         }
+        console.log('formData', formData);
+        console.log('formData.file')
         // api action
         try {
             fetch('/api/submit', {
@@ -96,8 +125,10 @@ const SubmissionPage = () => {
             case 'Email address':
                 return setEmail(e.target.value);
             case 'Upload Files':
-                if (target.files)
+                if (target.files) {
                     return setFiles(e.target.files);
+                }
+
             default:
                 return;
         }
