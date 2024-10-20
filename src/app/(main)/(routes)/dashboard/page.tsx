@@ -1,8 +1,12 @@
-'use client'
 import useAuthUser from '@/app/hooks/auth_user';
 import Navbar from '@/components/Navbar'
+import ProcessTable from './_components/ProcessTable';
 
-export default function Page() {;
+export default async function Page() {
+
+  // const user = useAuthUser();
+  // const userId = user?.userId;
+
   return (
       <>
         <header className="bg-white shadow">
@@ -11,11 +15,9 @@ export default function Page() {;
           </div>
         </header>
         <main>
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 h-full mt-12">
 
-            <div className='font-bold text-3xl'>
-              <h1>Dashboard content</h1>
-            </div>
+            <ProcessTable />
           </div>
         </main>
       </>

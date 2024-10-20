@@ -45,7 +45,7 @@ const FormQuestion = ({title, type, multiple, required, placeholder, enumerate, 
         <div className="mt-16 gap-y-4">
             <div className="">
                 <h1
-                    className="flex items-center justify-start text-4xl font-semibold mb-4"
+                    className="flex items-center justify-start text-3xl md:text-4xl font-semibold mb-4"
                 >
                     {enumerate && `${index + 1}. `}
                     {title}

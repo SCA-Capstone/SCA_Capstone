@@ -8,8 +8,13 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useEffect, useState } from 'react';
+import useAuthUser from '@/app/hooks/auth_user';
 
 const SubmissionPage = () => {
+
+    // get the userId and pass it into the api fetch
+    // const user = useAuthUser();
+    // const userId = user?.id;
 
 
     const { name, setName, email, setEmail, company, setCompany, files, setFiles } = useForm();
@@ -86,6 +91,7 @@ const SubmissionPage = () => {
         }
 
         // grab all the global states and submit them to the backend
+        // TODO: replace id with userId from the user object from the auth hook
         const formData = {
             id: randNumber,
             created_at: created_at,
@@ -137,10 +143,10 @@ const SubmissionPage = () => {
 
     return (
         <div
-            className='flex items-center justify-center h-full ml-[15%] mr-[15%] mt-12'
+            className='flex items-center justify-center h-full ml-[10%] mr-[10%] mt-12'
         >
             <div
-                className='flex flex-col justify-start items-start h-[949px] mt-12 w-full bg-[#F3F4F6] rounded-[2rem] p-12 overflow-hidden'
+                className='flex flex-col justify-start items-start h-[949px] mt-12 w-full bg-[#F3F4F6] mb-12 rounded-[2rem] p-12 overflow-hidden'
             >
 
                 <div
@@ -150,7 +156,7 @@ const SubmissionPage = () => {
                         className="flex w-full h-10 "
                     >
                         <h1
-                            className='flex items-center justify-center text-5xl font-semibold'
+                            className='flex items-center justify-center text-4xl md:text-5xl font-semibold'
                         >
                             Submission Form
                         </h1>
