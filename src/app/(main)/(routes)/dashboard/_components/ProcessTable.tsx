@@ -16,19 +16,20 @@ const ProcessTable = () => {
         setIsMounted(true);
     }, []);
 
-    // fetch jobs from API/
-    useEffect( () => {
-        
+    // Fetch jobs from API
+    useEffect(() => {
         const fetchUserJobs = async (userId: string) => {
             console.log("userId", userId);
             // const response = await fetch(`/api/getJobs/${userId}`);
             // const data = await response.json();
             // console.log(data);
             // setJobs(data);
-        }
+        };
 
-        fetchUserJobs(user?.userId);
-    }, [])
+        if (user?.userId) {
+            fetchUserJobs(user.userId);
+        }
+    }, [user]); // Dependency on user
 
     if (!isMounted) {
         return null;

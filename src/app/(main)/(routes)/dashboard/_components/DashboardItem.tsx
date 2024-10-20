@@ -69,21 +69,18 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
                 )}
             >
                 {isHeader ? (
-                    <p
-                        className="text-neutral-100"
-                    >
-                        more
-                    </p>
+                    <span className="text-neutral-100">more</span>
                 ) : (
-                    <p
+                    <span
                         className="text-neutral-100 group-hover/item:text-neutral-400 hover:underline transition text-sm"
                         role="button"
                         onClick={() => {}}
                     >
                         more
-                    </p>
+                    </span>
                 )}
             </p>
+
 
 
         </div>
