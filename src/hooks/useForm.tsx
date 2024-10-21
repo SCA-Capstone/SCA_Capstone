@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
 type FormStore = {
-    name: string;
-    setName: (name: string) => void;
-    email: string;
-    setEmail: (email: string) => void;
+    jobName: string;
+    setJobName: (jobName: string) => void;
+    jobDescription: string;
+    setJobDescription: (jobDescription: string) => void;
     company: string;
     setCompany: (company: string) => void;
     files: File[];
@@ -12,10 +12,10 @@ type FormStore = {
 }
 
 export const useForm = create<FormStore>( (set) => ({
-    name: '',
-    setName: (name: string) => set({ name }),
-    email: '',
-    setEmail: (email: string) => set({ email }),
+    jobName: '',
+    setJobName: (jobName: string) => set({ jobName }),
+    jobDescription: '',
+    setJobDescription: (jobDescription: string) => set({ jobDescription }),
     company: '',
     setCompany: (company: string) => set({ company }),
     files: [],
