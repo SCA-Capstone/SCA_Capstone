@@ -43,11 +43,23 @@ const ProcessTable = () => {
             status: "Status",
             isHeader: true
     }
-    const job = {
+    const job1 = {
         id: 1,
         name: "Crystals Dilithium slk;dfjg ",
         date: "8.23.24",
         status: "submitted",
+    }
+    const job2 = {
+        id: 2,
+        name: "Crystals Kyber",
+        date: "7.20.24",
+        status: "in progress",
+    }
+    const job3 = {
+        id: 3,
+        name: "SABER test #1290",
+        date: "4.18.24",
+        status: "complete",
     }
 
 
@@ -86,12 +98,17 @@ const ProcessTable = () => {
                     className="flex flex-col gap-y-2 w-full h-auto mt-8"
                 >
                     <DashboardItem job={defaultJob}/>
-                    <DashboardItem job={job}/>
+                    <DashboardItem job={job1}/>
+                    <DashboardItem job={job2}/>
+                    <DashboardItem job={job3}/>
+
                     {/* 
                     {jobs.map((job) => (
                         <DashboardItem job={job} key={job.id}/>
                     ))}
                      */}
+
+                     {/* TODO: use absolute tailwind class to place a 'create new submission' button on bottom left */}
                 </div>
             ) : (
                 <div

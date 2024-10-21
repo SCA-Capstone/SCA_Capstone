@@ -23,7 +23,7 @@ const FormQuestion = ({title, type, multiple, required, placeholder, enumerate, 
         { value: 'CALTECH', label: 'California Inst. of Tech.' }
     ]
 
-    const { name, setName, email, setEmail, company, setCompany, files, setFiles } = useForm();
+    const { jobName, setJobName, jobDescription, setJobDescription, company, setCompany, files, setFiles } = useForm();
     
     const customStyles = {
         control: (provided: any) => ({

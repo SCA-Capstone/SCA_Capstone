@@ -15,28 +15,52 @@ const SubmissionPage = () => {
     // get the userId and pass it into the api fetch
     // const user = useAuthUser();
     // const userId = user?.id;
-
-
-    const { name, setName, email, setEmail, company, setCompany, files, setFiles } = useForm();
+    const [isMounted, setIsMounted] = useState(false);
+    const user = useAuthUser();
+    const [userId, setUserId] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const { jobName, setJobName, jobDescription, setJobDescription, company, setCompany, files, setFiles } = useForm();
     const [isLoading, setIsLoading] = useState(false);
-    // convert name, email, company, files to json
     const router = useRouter();
     const supabaseClient = useSupabaseClient();
 
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // Fetch jobs from API
+    useEffect(() => {
+
+        if (user?.userId) { // set id, name, email
+            setUserId(user.userId);
+            setName(user.name);
+            setEmail(user.email);
+            console.log('userId', userId);
+            console.log('name', name);
+            console.log('email', email);
+        }
+    }, [user]); // Dependency on user
+
+    if (!isMounted) {
+        return null;
+    }
+    // convert name, email, company, files to json
+
     const questions = [
-        {
-            title: "Full name",
+        { // TODO: change Full name to be Job Title
+            title: "Job Name",
             type: "text",
             required: true,
-            placeholder: "Enter full name...",
+            placeholder: "Enter Job name...",
         }, 
-        {
-            title: "Email address",
-            type: "email",
+        { // TODO: grab email from the user useAuthUser hook -> delete this field
+            title: "Job Description",
+            type: "text",
             required: true,
-            placeholder: "Enter email address...",
+            placeholder: "Enter Job Description...",
         },
-        {
+        { // TODO: grab company from the user useAuthUser hook -> delete this field
             title: "Company or Institute",
             type: "select",
             required: true,
@@ -47,7 +71,7 @@ const SubmissionPage = () => {
             type: "file",
             required: true,
             multiple: true,
-        }
+        } // TODO: add a description field
     ]
 
     const onHandleSubmit =  async (e: any) => {
@@ -78,7 +102,7 @@ const SubmissionPage = () => {
                 const { data: fileData, error: fileError } = await supabaseClient
                     .storage
                     .from('submission-files')
-                    .upload(`user-${randNumber}-submission-${randNumber2}/${file.name}`, file, {
+                    .upload(`user-${userId}-submission-${randNumber}/${file.name}`, file, {
                         cacheControl: '3600',
                         upsert: false
                     });
@@ -97,8 +121,10 @@ const SubmissionPage = () => {
             created_at: created_at,
             name: name,
             email: email,
+            jobName: jobName,
+            jobDescription: jobDescription,
             company: company,
-            userId: randNumber2,
+            userId: userId,
             files: files,
         }
         console.log('formData', formData);
@@ -126,10 +152,10 @@ const SubmissionPage = () => {
     const handleInputChange = (e: any, title: string) => {
         const target = e.target as HTMLInputElement;
         switch (title) {
-            case 'Full name':
-                return setName(e.target.value);
-            case 'Email address':
-                return setEmail(e.target.value);
+            case 'Job Name':
+                return setJobName(e.target.value);
+            case 'Job Description':
+                return setJobDescription(e.target.value);
             case 'Upload Files':
                 if (target.files) {
                     return setFiles(e.target.files);
