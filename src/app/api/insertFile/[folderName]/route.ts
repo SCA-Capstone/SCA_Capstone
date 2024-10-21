@@ -6,11 +6,10 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabaseClient = createClient(supabaseUrl as string, supabaseKey as string);
 
 export async function POST(req: Request, { params }: { params: { folderName: string } }) {
-    const { folderName } = params; // Capture the full folder name from the URL
-    console.log('Received Folder Name:', folderName);  // Log to verify the folder name is received
+    const { folderName } = params;
+    console.log('Received Folder Name:', folderName);
 
     try {
-        // Parse the file from the form data
         const formData = await req.formData();
         const file = formData.get('file') as File;
 
@@ -19,15 +18,19 @@ export async function POST(req: Request, { params }: { params: { folderName: str
         }
 
         const fileName = file.name;
-        console.log(`Uploading to folder: ${folderName}`);  // Log folder name for debugging
+        console.log(`Uploading to folder: ${folderName}`);
 
-        // Upload file to Supabase storage in the specified folder
+        // Convert file stream to a buffer
+        const fileBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(fileBuffer);
+
+        // Upload the buffer to Supabase storage in the specified folder
         const { data, error } = await supabaseClient
             .storage
             .from('submission-files')
-            .upload(`${folderName}/${fileName}`, file.stream(), {
+            .upload(`${folderName}/${fileName}`, buffer, {
                 cacheControl: '3600',
-                upsert: false,  // Prevent overwriting files
+                upsert: false,
             });
 
         if (error) {
