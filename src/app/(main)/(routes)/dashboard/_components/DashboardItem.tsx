@@ -1,23 +1,27 @@
 "use client";
 import { twMerge } from "tailwind-merge";
 import StatusButton from "./StatusButton";
+import { Job } from "@/types/Job";
 
 interface DashboardItemProps {
-    job: {
-        id: number;
-        name: string;
-        date: string;
-        status: string;
-        isHeader?: boolean;
-    };
+    job: Job;
 }
 
 const DashboardItem = ( {job}: DashboardItemProps ) => {
-
-    const { id, name, date, status, isHeader } = job;
-    // TODO: add formatDate method (2024-10-15T23:49:22.481Z => 10.15.2024)
-
-    const textColor = isHeader ? 'text-neutral-400 font-' : 'text-neutral-700 font-medium';
+    
+    const { company, created_at, email, files, id, jobDescription, jobName, name, status, userId, isHeader } = job;
+    const formatDate = (date: string) => {
+        // TODO: add formatDate method (2024-10-15T23:49:22.481Z => 10.15.2024)
+        date = date.split('T')[0];
+        // replace '-' with '.'
+        date = date.replace(/-/g, '.');
+        // reformat MM.DD.YYYY
+        date = date.split('.').slice(1).concat(date.split('.')[0]).join('.');
+        return date;
+    }
+    
+    const date = !isHeader ? formatDate(created_at) : "Date";
+    const textColor = !isHeader ? 'text-neutral-700 font-medium' : 'text-neutral-700 font-medium';
 
 
     return (
@@ -34,7 +38,7 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
                     textColor,
                 )}
             >
-                {name}
+                {jobName}
             </p>
 
             <p
