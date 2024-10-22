@@ -7,10 +7,10 @@ const supabaseClient = createClient(supabaseUrl as string, supabaseKey as string
 
 export async function POST(req: Request) {
     try {
-        const { id, created_at, name, email, company, userId, files } = await req.json();
+        const { id, created_at, name, email, jobName, jobDescription, company, userId, files } = await req.json();
         console.log('files', files);
         const isFiles = files && Object.keys(files).length > 0 ? true : false
-        let newFiles = files.FileList;
+        // let newFiles = files.FileList;
 
         // upload files to supabase (storage in submission-files bucket)
         // upload each file separately
@@ -49,12 +49,12 @@ export async function POST(req: Request) {
 
 
 
-        console.log('Form data:', { id, created_at, name, email, company, userId, files });
+        console.log('Form data:', { id, created_at, name, email, jobName, jobDescription, company, userId, files });
 
         // Insert form data into the 'job-submissions' table
         const { data, error } = await supabaseClient
             .from('job-submissions')
-            .insert([{ id, created_at, name, email, company, userId, files: isFiles }]);
+            .insert([{ id, created_at, name, email, jobName, jobDescription, company, userId, files: isFiles }]);
 
         if (error) {
             throw new Error(error.message);
