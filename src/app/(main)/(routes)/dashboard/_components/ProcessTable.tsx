@@ -6,10 +6,20 @@ import JobButtons from "./JobButtons";
 import DashboardItem from "./DashboardItem";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Job } from "@/types/Job";
 
 const ProcessTable = () => {
     const [isMounted, setIsMounted] = useState(false);
-    const [jobs, setJobs] = useState([]); // useState<Jobs[]>();
+    // interface Job {
+    //     id: number;
+    //     name: string;
+    //     date: string;
+    //     status: string;
+    //     isHeader?: boolean;
+    // }
+
+    const [jobs, setJobs] = useState<Job[]>([]);
+    const [fiveSecond, setFiveSecond] = useState<boolean>(true);
     const user = useAuthUser();
 
     useEffect(() => {
@@ -20,16 +30,27 @@ const ProcessTable = () => {
     useEffect(() => {
         const fetchUserJobs = async (userId: string) => {
             console.log("userId", userId);
-            // const response = await fetch(`/api/getJobs/${userId}`);
-            // const data = await response.json();
-            // console.log(data);
-            // setJobs(data);
+            const response = await fetch(`/api/getJobs/${userId}`);
+            const data = await response.json();
+            console.log(data);
+            setJobs(data);
+            setFiveSecond(false);
         };
 
         if (user?.userId) {
             fetchUserJobs(user.userId);
         }
-    }, [user]); // Dependency on user
+    }, [user, fiveSecond]); // Dependency on user
+
+    useEffect( () => {
+        // change the state of fiveSecond every 5 seconds to trigger the useEffect -> call the api for new jobs
+        const interval = setInterval(() => {
+            console.log("5 seconds passed");
+            setFiveSecond(true);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [fiveSecond] );
 
     if (!isMounted) {
         return null;
@@ -38,16 +59,19 @@ const ProcessTable = () => {
     const numJobs = 0;
     const defaultJob = {
             id: -1,
-            name: "Process name",
+            name: "User name",
             date: "Date",
             status: "Status",
-            isHeader: true
-    }
-    const job = {
-        id: 1,
-        name: "Crystals Dilithium slk;dfjg ",
-        date: "8.23.24",
-        status: "submitted",
+            isHeader: true,
+            company: "",
+            created_at: "",
+            email: "",
+            files: false,
+            jobDescription: "",
+            jobName: "Process Name",
+            userId: ""
+
+
     }
 
 
@@ -64,7 +88,7 @@ const ProcessTable = () => {
                     <h1
                         className='flex items-center justify-center text-4xl md:text-5xl font-semibold'
                     >
-                        Jobs
+                        Job
                     </h1>
                 </div>
 
@@ -72,7 +96,7 @@ const ProcessTable = () => {
                     className="flex justify-between items-center"
                 >
                     <p className='text-neutral-400 text-md font-bold'>
-                        {numJobs} jobs
+                        { jobs && jobs.length == 1 ? `${jobs.length} job` : `${jobs.length} jobs`}
                     </p>
 
                     <JobButtons />
@@ -86,12 +110,14 @@ const ProcessTable = () => {
                     className="flex flex-col gap-y-2 w-full h-auto mt-8"
                 >
                     <DashboardItem job={defaultJob}/>
-                    <DashboardItem job={job}/>
-                    {/* 
+
+                    
                     {jobs.map((job) => (
-                        <DashboardItem job={job} key={job.id}/>
+                        <DashboardItem job={job} key={job?.id}/>
                     ))}
-                     */}
+                    
+
+                     {/* TODO: use absolute tailwind class to place a 'create new submission' button on bottom left */}
                 </div>
             ) : (
                 <div

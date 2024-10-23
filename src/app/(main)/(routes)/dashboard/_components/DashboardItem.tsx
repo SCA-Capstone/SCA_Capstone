@@ -1,21 +1,27 @@
 "use client";
 import { twMerge } from "tailwind-merge";
+import StatusButton from "./StatusButton";
+import { Job } from "@/types/Job";
 
 interface DashboardItemProps {
-    job: {
-        id: number;
-        name: string;
-        date: string;
-        status: string;
-        isHeader?: boolean;
-    };
+    job: Job;
 }
 
 const DashboardItem = ( {job}: DashboardItemProps ) => {
-
-    const { id, name, date, status, isHeader } = job;
-
-    const textColor = isHeader ? 'text-neutral-400 font-medium' : 'text-neutral-700';
+    
+    const { company, created_at, email, files, id, jobDescription, jobName, name, status, userId, isHeader } = job;
+    const formatDate = (date: string) => {
+        // TODO: add formatDate method (2024-10-15T23:49:22.481Z => 10.15.2024)
+        date = date.split('T')[0];
+        // replace '-' with '.'
+        date = date.replace(/-/g, '.');
+        // reformat MM.DD.YYYY
+        date = date.split('.').slice(1).concat(date.split('.')[0]).join('.');
+        return date;
+    }
+    
+    const date = !isHeader ? formatDate(created_at) : "Date";
+    const textColor = !isHeader ? 'text-neutral-700 font-medium' : 'text-neutral-700 font-medium';
 
 
     return (
@@ -28,11 +34,11 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
         >
             <p
                 className={twMerge(
-                    `lg:text-lg text-sm line-clamp-1 w-32 lg:w-40 `,
+                    `lg:text-lg text-sm line-clamp-1 w-32 lg:w-40`,
                     textColor,
                 )}
             >
-                {name}
+                {jobName}
             </p>
 
             <p
@@ -52,15 +58,20 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
             >
                 {isHeader ? 'ID': id}
             </p>
+            
+            {isHeader ? (
+                <p
+                    className={twMerge(
+                        `lg:text-lg text-sm p-4`,
+                        textColor,
+                    )}
+                >
+                    {status}
+                </p>
 
-            <p
-                className={twMerge(
-                    `lg:text-lg text-sm`,
-                    textColor,
-                )}
-            >
-                {status}
-            </p>
+            ) : (
+                <StatusButton status={status}/>
+            )}
 
             <p
                 className={twMerge(
@@ -69,15 +80,19 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
                 )}
             >
                 {isHeader ? (
-                    <span className="text-neutral-100">more</span>
+                    <p
+                        className="text-neutral-100"
+                    >
+                        ____
+                    </p>
                 ) : (
-                    <span
-                        className="text-neutral-100 group-hover/item:text-neutral-400 hover:underline transition text-sm"
+                    <p
+                        className="text-neutral-100 group-hover/item:text-neutral-400 hover:underline transition text-xs sm:text-sm"
                         role="button"
                         onClick={() => {}}
                     >
                         more
-                    </span>
+                    </p>
                 )}
             </p>
 

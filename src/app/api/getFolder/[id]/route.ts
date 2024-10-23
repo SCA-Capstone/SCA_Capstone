@@ -47,7 +47,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       return { fileName: file.name, publicUrl: data.publicUrl };
     });
 
-    return NextResponse.json({ files: publicUrls });
+    // Return folder name and files
+    return NextResponse.json({ folderName: matchingFolder.name, files: publicUrls });
     
   } catch (error) {
     console.error('Error fetching files:', error);
