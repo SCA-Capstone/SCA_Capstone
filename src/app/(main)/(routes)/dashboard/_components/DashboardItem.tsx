@@ -2,6 +2,7 @@
 import { twMerge } from "tailwind-merge";
 import StatusButton from "./StatusButton";
 import { Job } from "@/types/Job";
+import { useState } from "react";
 
 interface DashboardItemProps {
     job: Job;
@@ -10,6 +11,7 @@ interface DashboardItemProps {
 const DashboardItem = ( {job}: DashboardItemProps ) => {
     
     const { company, created_at, email, files, id, jobDescription, jobName, name, status, userId, isHeader } = job;
+    const [fileUrls, setFileUrls] = useState<string[]>([]);
     const formatDate = (date: string) => {
         // TODO: add formatDate method (2024-10-15T23:49:22.481Z => 10.15.2024)
         date = date.split('T')[0];
@@ -18,6 +20,24 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
         // reformat MM.DD.YYYY
         date = date.split('.').slice(1).concat(date.split('.')[0]).join('.');
         return date;
+    }
+
+    const onMoreClick = () => {
+        // call get response files api
+        const fetchResponseFiles = async (submissionId: number, userId: string) => {
+
+            const res = await fetch(`/api/getResponseFiles/${submissionId}`);
+            const data = await res.json();
+            console.log(data);
+
+            // set fileUrls
+            // for (const file of data.files) {
+            //     setFileUrls((prev) => [...prev, file.publicUrl]);
+            // }
+
+        }
+
+        fetchResponseFiles(id, userId);
     }
     
     const date = !isHeader ? formatDate(created_at) : "Date";
@@ -89,7 +109,7 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
                     <p
                         className="text-neutral-100 group-hover/item:text-neutral-400 hover:underline transition text-xs sm:text-sm"
                         role="button"
-                        onClick={() => {}}
+                        onClick={onMoreClick}
                     >
                         more
                     </p>

@@ -88,7 +88,7 @@ const ProcessTable = () => {
                     <h1
                         className='flex items-center justify-center text-4xl md:text-5xl font-semibold'
                     >
-                        Job
+                        Jobs
                     </h1>
                 </div>
 

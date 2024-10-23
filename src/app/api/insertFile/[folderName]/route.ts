@@ -27,7 +27,7 @@ export async function POST(req: Request, { params }: { params: { folderName: str
         // Upload the buffer to Supabase storage in the specified folder
         const { data, error } = await supabaseClient
             .storage
-            .from('submission-files')
+            .from('response-files')
             .upload(`${folderName}/${fileName}`, buffer, {
                 cacheControl: '3600',
                 upsert: false,
