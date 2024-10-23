@@ -32,7 +32,7 @@ export default function TextInput({ label, name, type, showForgotPassword, place
           type={type}
           required
           placeholder={placeholder}
-          className="block w-full border-[1px] border-[#45503B] rounded-md px-2 py-1.5 text-[#CAD2C5] shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
+          className="block w-full border-[1px] border-[#45503B] rounded-md px-2 py-1.5 text-[#45503B] shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
         />
       </div>
     </div>
