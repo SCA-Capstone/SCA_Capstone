@@ -6,7 +6,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabaseClient = createClient(supabaseUrl as string, supabaseKey as string);
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params; // 'id' refers to the last three digits
+  const { id } = params; // 'id' refers to the last three digits (submission-userId-jobId), jobId is the last three digits
   try {
     // Get all folders in the 'response-files' bucket
     const { data: folderList, error: folderError } = await supabaseClient

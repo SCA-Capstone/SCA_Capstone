@@ -1,13 +1,13 @@
 "use client";
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname, useRouter } from 'next/navigation'
 import { PowerIcon } from "@heroicons/react/24/outline";
 
 import { handleSignOut } from "@/lib/cognito_actions";
 import useAuthUser from '@/app/hooks/auth_user';
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: true },
+  { name: 'Dashboard', href: '/dashboard', current: false },
   { name: 'Submit Job', href: '/submit', current: false },
 ]
 const userNavigation = [
@@ -21,13 +21,28 @@ function classNames(...classes: string[]) {
 }
 const Navbar = () => {
   const user = useAuthUser();
+  const router = useRouter();
+  const pathname = usePathname();
+
+    // Update the navigation array to set the current page
+    const updatedNavigation = navigation.map((item) => ({
+      ...item,
+      current: pathname === item.href,
+    }));
+
   return (
     <Disclosure as="nav" className="bg-[#45503B]">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-white font-bold">Capstone SCA</h1>
+              <h1
+                className="text-white font-bold"
+                role="button"
+                onClick={() => router.push('/')}
+              >
+                  Capstone SCA
+              </h1>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
