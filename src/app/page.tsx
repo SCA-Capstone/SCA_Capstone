@@ -2,43 +2,45 @@
 
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
+import ProcessTable from "./(main)/(routes)/dashboard/_components/ProcessTable";
+import Header from "@/components/Header";
+import { Button } from "@/components/Button";
+import { useRouter } from "next/navigation";
+import HomeCardAbout from "@/components/HomeCardAbout";
+import HomeCardTimeline from "@/components/HomeCardTimeline";
 
 export default function Home() {
+  const router = useRouter();
 
-  async function fetchFileUrl(fileID: string) {
-    try {
-      const response = await fetch(`/api/getFile/${fileID}`);
-      const data = await response.json();
   
-      if (response.ok) {
-        const publicUrl = data.publicUrl;
-        console.log('Public URL:', publicUrl);
-        // Use the publicUrl as needed, for example, setting it as the href of a link
-      } else {
-        console.error('Error fetching file URL:', data.message);
-      }
-    } catch (error) {
-      console.error('Error fetching file URL:', error);
-    }
-  }
+
 
   return (
-    <div className="w-full h-full border-2 border-red-500">
-        <h1
-          className="flex items-center justify-center text-4xl"
-        >
-          Users not logged in will see the marketing page
-        </h1>
+    <>
+        <Navbar />
+        <Header>
+            <div
+              className="flex flex-col justify-center items-center gap-y-4"
+            >
+              <h1 className="text-3xl font-bold tracking-tight text-neutral-100">Welcome to the UofA PQC Website</h1>
 
-        <div className="flex items-center justify-center h-screen">
-          <div
-            className="flex items-center justify-center w-36 h-24 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700"
-            role="button"
-            onClick={() => fetchFileUrl("424")}  
-          >
-            Click me
-          </div>
-        </div>
-    </div>
+              <button
+                  className='bg-neutral-800 text-white w-[200px] p-3 rounded-full hover:bg-neutral-900 transition tracking-widest'
+                  onClick={() => router.push('/auth/sign-in')}
+              >
+                  Get Started
+              </button>
+            </div>
+        </Header>
+
+        <main
+          className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 h-full mt-12 gap-6-16"
+        >
+          <HomeCardAbout />
+          <HomeCardTimeline />
+          
+        </main> 
+
+    </>
   );
 }

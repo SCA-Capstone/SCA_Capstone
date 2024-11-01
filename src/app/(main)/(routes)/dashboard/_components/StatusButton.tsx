@@ -3,9 +3,10 @@ import { twMerge } from "tailwind-merge";
 
 interface StatusButtonProps {
     status: string;
+    size?: string;
 }
 
-const StatusButton = ({ status }: StatusButtonProps) => {
+const StatusButton = ({ status, size }: StatusButtonProps) => {
 
     return (
         <div
@@ -14,6 +15,7 @@ const StatusButton = ({ status }: StatusButtonProps) => {
             status === 'submitted' && 'bg-[#D9D9D9]/90',
             status === 'in progress' && 'bg-[#F5E5C0] ',
             status === 'complete' && 'bg-[#DEECDC] text-black',
+            size === 'xl' && 'w-32 h-12 text-3xl font-semibold',
 
             )}
         >

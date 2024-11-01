@@ -7,6 +7,8 @@ import DashboardItem from "./DashboardItem";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Job } from "@/types/Job";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const ProcessTable = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -21,6 +23,7 @@ const ProcessTable = () => {
     const [jobs, setJobs] = useState<Job[]>([]);
     const [fiveSecond, setFiveSecond] = useState<boolean>(true);
     const user = useAuthUser();
+    const router = useRouter();
 
     useEffect(() => {
         setIsMounted(true);
@@ -42,15 +45,15 @@ const ProcessTable = () => {
         }
     }, [user, fiveSecond]); // Dependency on user
 
-    useEffect( () => {
-        // change the state of fiveSecond every 5 seconds to trigger the useEffect -> call the api for new jobs
-        const interval = setInterval(() => {
-            console.log("5 seconds passed");
-            setFiveSecond(true);
-        }, 5000);
+    // useEffect( () => {
+    //     // change the state of fiveSecond every 5 seconds to trigger the useEffect -> call the api for new jobs
+    //     const interval = setInterval(() => {
+    //         console.log("5 seconds passed");
+    //         setFiveSecond(true);
+    //     }, 5000);
 
-        return () => clearInterval(interval);
-    }, [fiveSecond] );
+    //     return () => clearInterval(interval);
+    // }, [fiveSecond] );
 
     if (!isMounted) {
         return null;
@@ -77,7 +80,7 @@ const ProcessTable = () => {
 
     return (
         <div
-            className='flex flex-col justify-start items-start h-[949px] mt-12 w-full bg-[#F3F4F6] rounded-[2rem] p-12 overflow-hidden'
+            className='flex flex-col justify-start items-start relative h-[949px] mt-12 w-full bg-[#F3F4F6] rounded-[2rem] p-12 overflow-hidden'
         >
             <div
                 className='flex w-full h-auto flex-col gap-y-4 '
@@ -141,7 +144,18 @@ const ProcessTable = () => {
 
             )}
 
-
+            <div
+                className="absolute bottom-6 left-6 flex items-center gap-x-2 cursor-pointer group"
+                role="button"
+                onClick={() => router.push('/submit')}
+            >
+                <Plus className="w-4 h-4 text-neutral-400 group-hover:text-neutral-600 transition"/>
+                <p
+                    className="text-md text-neutral-400 font-medium group-hover:text-neutral-600 transition"
+                >
+                    Create new submission
+                </p>
+            </div>
 
         </div>
     )
