@@ -3,6 +3,7 @@
 import uniqid from 'uniqid';
 import { useForm } from "@/hooks/useForm";
 import FormQuestion from "./_components/FormQuestion";
+import FormConfig from './_components/FormConfig';
 import { ReceiptRussianRuble } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -91,15 +92,10 @@ const SubmissionPage = () => {
         },
         {
             title: "Configuration",
-            type: "text",
-            required: true,
-            placeholder: "Enter configuration...",
-        },
-        {
-            title: "Area Files",
             type: "select",
             required: true,
-            placeholder: "Select area files...",
+            isConfig: true,// Property identiifies differece from other select type
+            placeholder: "Choose configuration...",
         }
     ];
 
@@ -200,10 +196,13 @@ const SubmissionPage = () => {
             <div className='mt-4 gap-y-16 w-full'>
                 <form onSubmit={onHandleSubmit}>
                     {questions.map((question, index) => (
-                        question.title === "Upload Files" ? (
+                        question.title === "4. Upload Files" ? (
                             <div key={index} className="mb-4">
-                                <label className="block text-gray-700 text-3xl font-bold mb-2">
-                                    <strong>{question.title}</strong>
+                                <label className="block text-gray-700 text-3xl font-semibold mb-2">
+                                    <h1 className="flex items-center justify-start text-3xl md:text-4xl font-semibold mb-4">
+                                        {question.title}
+                                        
+                                    </h1>
                                 </label>
                                 <div {...getRootProps()} className="border-2 border-dashed border-gray-400 p-6 rounded-lg cursor-pointer">
                                     <input {...getInputProps()} />
@@ -214,6 +213,16 @@ const SubmissionPage = () => {
                                     }
                                 </div>
                             </div>
+                        ) : question.isConfig ? (
+                            <FormConfig
+                                key={index}
+                                {...question}
+                                enumerate
+                                index={index}
+                                placeholder={question.placeholder || ''}
+                                onChange={handleInputChange}
+                                onSelectChange={(option) => setCompany(option.value)}
+                            />
                         ) : (
                             <FormQuestion
                                 key={index}
