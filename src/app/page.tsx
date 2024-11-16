@@ -8,10 +8,16 @@ import { Button } from "@/components/Button";
 import { useRouter } from "next/navigation";
 import HomeCardAbout from "@/components/HomeCardAbout";
 import HomeCardTimeline from "@/components/HomeCardTimeline";
+import useAuthUser from "./hooks/auth_user";
+
 
 export default function Home() {
   const router = useRouter();
+  const user = useAuthUser();
 
+  const isLoggedIn = user !== undefined;
+  const route = isLoggedIn ? '/dashboard' : '/auth/sign-in';
+  const buttonText = isLoggedIn ? 'Dashboard' : 'Sign In';
   
 
 
@@ -26,9 +32,9 @@ export default function Home() {
 
               <button
                   className='bg-neutral-800 text-white w-[200px] p-3 rounded-full hover:bg-neutral-900 transition tracking-widest'
-                  onClick={() => router.push('/auth/sign-in')}
+                  onClick={() => router.push(route)}
               >
-                  Get Started
+                  {buttonText}
               </button>
             </div>
         </Header>

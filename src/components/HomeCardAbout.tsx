@@ -4,7 +4,7 @@ import Image from 'next/image'
 const HomeCard1 = () => {
     return (
         <div
-            className='flex flex-col sm:flex-row justify-between items-start gap-x-8 gap-y-8 h-[512px] mt-12 w-full bg-neutral-100 rounded-[2rem] p-12 overflow-hidden'
+            className='flex flex-col sm:flex-row justify-between items-start gap-x-8 gap-y-8 sm:h-[512px] mt-12 w-full bg-neutral-100 rounded-[2rem] p-12 overflow-hidden'
         >
             <Image
                 src='/images/imagePlaceholder.png'

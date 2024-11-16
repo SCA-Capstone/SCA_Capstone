@@ -6,6 +6,7 @@ import { PowerIcon } from "@heroicons/react/24/outline";
 
 import { handleSignOut } from "@/lib/cognito_actions";
 import useAuthUser from '@/app/hooks/auth_user';
+import Image from 'next/image';
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: false },
   { name: 'Submit Job', href: '/submit', current: false },
@@ -70,9 +71,13 @@ const Navbar = () => {
                   <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
-                    <img alt=""
-                    src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/ec350a95-5964-4f25-a60e-64226bea331a/d7q63ai-53a292fd-5171-4cca-bb57-75d5ebe3d555.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2VjMzUwYTk1LTU5NjQtNGYyNS1hNjBlLTY0MjI2YmVhMzMxYVwvZDdxNjNhaS01M2EyOTJmZC01MTcxLTRjY2EtYmI1Ny03NWQ1ZWJlM2Q1NTUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.j-dKg9D9eiuNc3FSvSIE9AcYGN6R1lQ6pXhk8VdQVEQ"}
-                    className="h-8 w-8 rounded-full" />
+                    <Image // TODO: define imageUrl in user object
+                      alt=""
+                      src={user?.imageUrl}
+                      width={8}
+                      height={8}
+                      className="h-8 w-8 rounded-full border-2 border-black"
+                    />
                   </MenuButton>
                 </div>
                 <MenuItems

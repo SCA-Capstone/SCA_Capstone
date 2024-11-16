@@ -33,7 +33,13 @@ const ProcessTable = () => {
     useEffect(() => {
         const fetchUserJobs = async (userId: string) => {
             console.log("userId", userId);
-            const response = await fetch(`/api/getJobs/${userId}`);
+            const response = await fetch(`/api/getJobs/${userId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_AUTH_TOKEN}`,
+                },
+            });
             const data = await response.json();
             console.log(data);
             setJobs(data);
@@ -41,6 +47,8 @@ const ProcessTable = () => {
         };
 
         if (user?.userId) {
+            console.log("API AUTH TOKEN: ", process.env.API_AUTH_TOKEN?.toString());
+            console.log("NEXT_PUBLIC_API_AUTH_TOKEN: ", process.env.NEXT_PUBLIC_API_AUTH_TOKEN?.toString());
             fetchUserJobs(user.userId);
         }
     }, [user, fiveSecond]); // Dependency on user
