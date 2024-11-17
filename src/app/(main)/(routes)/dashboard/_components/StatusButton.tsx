@@ -15,7 +15,7 @@ const StatusButton = ({ status, size }: StatusButtonProps) => {
             status === 'submitted' && 'bg-[#D9D9D9]/90',
             status === 'in progress' && 'bg-[#F5E5C0] ',
             status === 'complete' && 'bg-[#DEECDC] text-black',
-            size === 'xl' && 'w-32 h-12 text-3xl font-semibold',
+            size === 'xl' && 'w-28 h-10 text-base',
 
             )}
         >

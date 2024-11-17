@@ -8,18 +8,19 @@ const supabaseClient = createClient(supabaseUrl as string, supabaseKey as string
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const { id } = params; // 'id' refers to the last three digits (submission-userId-jobId), jobId is the last three digits
   try {
-    // Get all folders in the 'response-files' bucket
+    // Get all folders in the 'submission-files' bucket
     const { data: folderList, error: folderError } = await supabaseClient
       .storage
-      .from('response-files')
+      .from('submission-files')
       .list('', { limit: 100, offset: 0 }); // List top-level folders/files
 
     if (folderError) {
       throw new Error(folderError.message);
     }
 
-    // Filter by Submission ID, modify if you want to search by User ID
     console.log('folderList:', folderList);
+
+    // Filter by Submission ID, modify if you want to search by User ID
     const matchingFolder = folderList.find((folder) => 
       folder.name.slice(-5) === id
     );
@@ -32,7 +33,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     // List all files in the matching folder
     const { data: fileList, error: fileError } = await supabaseClient
       .storage
-      .from('response-files')
+      .from('submission-files')
       .list(matchingFolder.name);
 
     if (fileError) {
@@ -43,7 +44,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     const publicUrls = fileList.map((file) => {
       const { data } = supabaseClient
         .storage
-        .from('response-files')
+        .from('submission-files')
         .getPublicUrl(`${matchingFolder.name}/${file.name}`);
         
       return { fileName: file.name, publicUrl: data.publicUrl };

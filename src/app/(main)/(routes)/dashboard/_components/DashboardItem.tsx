@@ -4,6 +4,7 @@ import StatusButton from "./StatusButton";
 import { Job } from "@/types/Job";
 import { useState } from "react";
 import { useJobModal } from "@/hooks/useJobModal";
+import { formatDate } from "@/actions/actions";
 
 interface DashboardItemProps {
     job: Job;
@@ -15,20 +16,11 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
     const [fileUrls, setFileUrls] = useState<string[]>([]);
     const jobModal = useJobModal();
 
-    const formatDate = (date: string) => {
-        // TODO: add formatDate method (2024-10-15T23:49:22.481Z => 10.15.2024)
-        date = date.split('T')[0];
-        // replace '-' with '.'
-        date = date.replace(/-/g, '.');
-        // reformat MM.DD.YYYY
-        date = date.split('.').slice(1).concat(date.split('.')[0]).join('.');
-        return date;
-    }
-
     const onMoreClick = () => {
         // set the submisionId in the useJobModal store
         jobModal.setSubmissionId(id);
         jobModal.setUserId(userId);
+        console.log(`Submission ID: ${id}, User ID: ${userId}`);
         // open job modal
         jobModal.onOpen();
     }

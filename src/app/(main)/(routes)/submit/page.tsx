@@ -11,6 +11,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useEffect, useState } from 'react';
 import useAuthUser from '@/app/hooks/auth_user';
 import { useDropzone } from 'react-dropzone';
+import { generateHash } from '@/actions/actions';
 
 const SubmissionPage = () => {
 
@@ -19,16 +20,12 @@ const SubmissionPage = () => {
     const [userId, setUserId] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const { jobName, setJobName, jobDescription, setJobDescription, company, setCompany, files, setFiles } = useForm();
+    const { jobName, setJobName, jobDescription, setJobDescription, company, setCompany, configuration, setConfiguration, files, setFiles, setFileStatus } = useForm();
     const [isLoading, setIsLoading] = useState(false);
-    const [incrementalId, setIncrementalId] = useState(0);
+    const [submissionId, setSubmissionId] = useState<number>(0);
     const router = useRouter();
     const supabaseClient = useSupabaseClient();
-    const onDrop = (acceptedFiles: File[]) => {
-        setFiles(acceptedFiles);
-    };
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     useEffect(() => {
         setIsMounted(true);
@@ -43,23 +40,19 @@ const SubmissionPage = () => {
             console.log('name', name);
             console.log('email', email);
         }
-    }, [user]);
+    }, [user, userId, name, email]);
 
     useEffect(() => {
-        // Fetch the latest incremental ID from the backend or local storage
-        const fetchIncrementalId = async () => {
-            // Replace with actual API call or local storage retrieval
-            const latestId = await getLatestIncrementalId();
-            setIncrementalId(latestId + 1);
-        };
-        fetchIncrementalId();
-    }, []);
 
-    const getLatestIncrementalId = async () => {
-        // Mock function to get the latest ID
-        // Replace with actual implementation
-        return 1000;
-    };
+        const generateUniqueId = async () => {
+            const date = new Date();
+            const hash = await generateHash(userId, date);
+
+            console.log('hash', hash);
+            setSubmissionId(hash);
+        }
+        generateUniqueId();
+    }, []);
 
     if (!isMounted) {
         return null;
@@ -83,6 +76,11 @@ const SubmissionPage = () => {
             type: "select",
             required: true,
             placeholder: "Select organization...",
+            options: [
+                { value: 'UARK', label: 'Univ. Of Arkansas' },
+                { value: 'PRINCE', label: 'Princeton Univ.' },
+                { value: 'CALTECH', label: 'California Inst. of Tech.' }
+            ]
         },
         {
             title: "Upload Files",
@@ -94,8 +92,12 @@ const SubmissionPage = () => {
             title: "Configuration",
             type: "select",
             required: true,
-            isConfig: true,// Property identiifies differece from other select type
             placeholder: "Choose configuration...",
+            options: [
+                { value: 'Python', label: 'Python' },
+                { value: 'C++', label: 'C++' },
+                { value: 'Java', label: 'Java' }
+            ]
         }
     ];
 
@@ -107,8 +109,6 @@ const SubmissionPage = () => {
         }
 
         setIsLoading(true);
-
-        const uniqueID = uniqid();
         const created_at = new Date().toISOString();
 
         console.log(' uploading files, files:', files);
@@ -118,23 +118,28 @@ const SubmissionPage = () => {
                 console.log('KEY', key);
                 console.log('FILE', file);
 
+                // setFileStatus(file, 'uploading');
+
                 const { data: fileData, error: fileError } = await supabaseClient
                     .storage
                     .from('submission-files')
-                    .upload(`user-${userId}-submission-${incrementalId}/${file.name}`, file, {
+                    .upload(`user-${userId}-submission-${submissionId}/${file.name}`, file, {
                         cacheControl: '3600',
                         upsert: false
                     });
                 if (fileError) {
                     console.error('Error uploading file:', fileError);
+                    // setFileStatus(file, 'error');
                     return;
+                } else {
+                    // setFileStatus(file, 'success');
                 }
                 console.log('Files were uploaded:', fileData);
             }
         }
 
         const formData = {
-            id: incrementalId,
+            id: submissionId,
             created_at: created_at,
             name: name,
             email: email,
@@ -142,6 +147,7 @@ const SubmissionPage = () => {
             jobDescription: jobDescription,
             company: company,
             userId: userId,
+            config: configuration,
             files: files,
         };
         console.log('formData', formData);
@@ -179,6 +185,18 @@ const SubmissionPage = () => {
         }
     };
 
+    const handleSelectChange = (option: { value: string, label: string }, title: string) => {
+        switch (title) {
+            case 'Company or Institute':
+                return setCompany(option.value);
+            case 'Configuration':
+                return setConfiguration(option.value);
+            default:
+                return;
+        }
+    }
+
+
     return (
         <div className='flex items-center justify-center min-h-screen ml-[10%] mr-[10%] mt-12 overflow-y-auto'>
         <div className='flex flex-col justify-start items-start w-full bg-[#F3F4F6] mb-12 rounded-[2rem] p-12 overflow-hidden'>
@@ -196,34 +214,6 @@ const SubmissionPage = () => {
             <div className='mt-4 gap-y-16 w-full'>
                 <form onSubmit={onHandleSubmit}>
                     {questions.map((question, index) => (
-                        question.title === "4. Upload Files" ? (
-                            <div key={index} className="mb-4">
-                                <label className="block text-gray-700 text-3xl font-semibold mb-2">
-                                    <h1 className="flex items-center justify-start text-3xl md:text-4xl font-semibold mb-4">
-                                        {question.title}
-                                        
-                                    </h1>
-                                </label>
-                                <div {...getRootProps()} className="border-2 border-dashed border-gray-400 p-6 rounded-lg cursor-pointer">
-                                    <input {...getInputProps()} />
-                                    {
-                                        isDragActive ?
-                                            <p>Drop the files here ...</p> :
-                                            <p>Drag and drop files or Click to select files</p>
-                                    }
-                                </div>
-                            </div>
-                        ) : question.isConfig ? (
-                            <FormConfig
-                                key={index}
-                                {...question}
-                                enumerate
-                                index={index}
-                                placeholder={question.placeholder || ''}
-                                onChange={handleInputChange}
-                                onSelectChange={(option) => setCompany(option.value)}
-                            />
-                        ) : (
                             <FormQuestion
                                 key={index}
                                 {...question}
@@ -231,9 +221,9 @@ const SubmissionPage = () => {
                                 index={index}
                                 placeholder={question.placeholder || ''}
                                 onChange={handleInputChange}
-                                onSelectChange={(option) => setCompany(option.value)}
+                                onSelectChange={(option, title) => handleSelectChange(option, title)}
+                                
                             />
-                        )
                     ))}
                     <div className="flex w-full justify-center items-center mt-8">
                         <button className='bg-blue-500 text-white w-[400px] p-3 rounded-full hover:bg-blue-600 transition tracking-widest' type='submit'>
