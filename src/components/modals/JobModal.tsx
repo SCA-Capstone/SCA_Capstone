@@ -19,6 +19,7 @@ import { ResponseFile } from "@/types/ResponseFile";
 import FileContent from "@/app/(main)/(routes)/dashboard/_components/FileContent";
 import { formatDate } from "@/actions/actions";
 import { useRouter } from "next/navigation";
+import FilesMapScrollArea from "../FilesMapScrollArea";
 
 const JobModal = () => {
 
@@ -29,6 +30,7 @@ const JobModal = () => {
     const [responseFiles, setResponseFiles] = useState<ResponseFile[]>([]);
     const [jobData, setJobData] = useState<Job | null>(null);
     const [selectedFile, setSelectedFile] = useState<ResponseFile | undefined>();
+    const [submissionFiles, SetSubmissionFiles] = useState<File[]>([]);
 
     const jobName = jobData?.jobName || "Job Name";
     const jobDescription = jobData?.jobDescription || "Job Description";
@@ -55,8 +57,22 @@ const JobModal = () => {
                 setJobData(data[0]);
             }
 
+        }
+
+        // fetch job data given submissionId
+        if (jobModal.isOpen) {
+            // make sure the job modal is refreshed after each open
+            setResponseFiles([]);
+            setSelectedFile(undefined);
+            fetchJobData(jobModal.submissionId, jobModal.userId);
+        }
+    }, [jobModal.submissionId, jobModal.userId, jobModal.isOpen]);
+
+    useEffect( () => { // separate useEffects to fetch data simulatanesouly (slightly faster)
+
+        const fetchResponseFiles = async (submissionId: number, userId: string) => {
             // fetch job data using submissionId
-            const res2 = await fetch(`/api/getResponseFiles/${submissionId}`);
+            const res2 = await fetch(`/api/getResponseFiles/${submissionId}`); // move this to a separate useEffect
 
             if (res2.ok) {
                 const data = await res2.json();
@@ -65,12 +81,45 @@ const JobModal = () => {
                 setResponseFiles(data.files);
             } else {
                 console.log("Error fetching response files");
+                setResponseFiles([]);
+                setSelectedFile(undefined);
             }
         }
 
         // fetch job data given submissionId
-        fetchJobData(jobModal.submissionId, jobModal.userId);
-    }, [jobModal.submissionId, jobModal.userId]);
+        if (jobModal.isOpen) {
+            // make sure the job modal is refreshed after each open
+            setResponseFiles([]);
+            setSelectedFile(undefined);
+            fetchResponseFiles(jobModal.submissionId, jobModal.userId);
+        }
+    }, [jobModal.submissionId, jobModal.userId, jobModal.isOpen]);
+
+    useEffect( () => {
+
+        const getSubmissionFiles = async (submissionId: number) => {
+            const res = await fetch(`/api/getSubmissionFiles/${submissionId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${process.env.NEXT_PUBLIC_API_AUTH_TOKEN}`,
+                },
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                SetSubmissionFiles(data.files);
+                console.log("Submission Files: ", data.files);
+            }
+
+        }
+
+
+        if (responseFiles.length < 1) {
+            getSubmissionFiles(jobModal.submissionId);
+        }
+    }, [jobModal.submissionId, jobModal.userId, jobModal.isOpen, responseFiles]);
+
 
 
     const onSelection = (file: string) => {
@@ -144,7 +193,7 @@ const JobModal = () => {
                             Description
                         </h1>
                         <div
-                            className="w-full h-48 bg-neutral-100 p-4 rounded-xl overflow-hidden"
+                            className="w-full h-32 2xl:h-48 bg-neutral-100 p-4 rounded-xl overflow-hidden"
                         >
                             <ScrollArea
                                 className="w-full h-full"
@@ -159,7 +208,7 @@ const JobModal = () => {
                         </div>
                     </div>
 
-                    {responseFiles.length > 0 && (
+                    {responseFiles.length > 0 ? (
                         <div
                             className="flex flex-col gap-y-4"
                         >
@@ -180,6 +229,15 @@ const JobModal = () => {
                             >
                                 Download Report
                             </button>
+                        </div>
+                    ) : (
+                        <div>
+                            <p
+                                className="text-3xl font-bold"
+                            >
+                                Submission Files
+                            </p>
+                            <FilesMapScrollArea files={submissionFiles} isSubmissionFiles />
                         </div>
                     )}
 

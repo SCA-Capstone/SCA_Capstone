@@ -35,14 +35,16 @@ const FileContent = ({ selectedFile }: FileContentProps) => {
         if (selectedFile?.publicUrl) {
             console.log("Fetching URL contents...");
             scrapeUrl(selectedFile.publicUrl);
+        } else {
+            setUrlContents("");
         }
     }, [selectedFile]);
 
     useEffect( () => {
-        return () => {
-            setUrlContents(null);
+        if (!jobModal.isOpen) {
+            setUrlContents("");
         }
-    }, [jobModal.onClose]);
+    }, [jobModal.isOpen]);
 
 
     const OnCopyClick = () => {

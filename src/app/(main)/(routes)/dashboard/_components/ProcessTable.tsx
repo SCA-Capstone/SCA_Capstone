@@ -127,8 +127,6 @@ const ProcessTable = () => {
                         <DashboardItem job={job} key={job?.id}/>
                     ))}
                     
-
-                     {/* TODO: use absolute tailwind class to place a 'create new submission' button on bottom left */}
                 </div>
             ) : (
                 <div

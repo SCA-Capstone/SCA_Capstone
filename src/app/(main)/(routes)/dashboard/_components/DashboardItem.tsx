@@ -20,6 +20,7 @@ const DashboardItem = ( {job}: DashboardItemProps ) => {
         // set the submisionId in the useJobModal store
         jobModal.setSubmissionId(id);
         jobModal.setUserId(userId);
+        console.log(`Submission ID: ${id}, User ID: ${userId}`);
         // open job modal
         jobModal.onOpen();
     }

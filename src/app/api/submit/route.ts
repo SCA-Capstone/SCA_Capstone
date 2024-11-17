@@ -7,54 +7,16 @@ const supabaseClient = createClient(supabaseUrl as string, supabaseKey as string
 
 export async function POST(req: Request) {
     try {
-        const { id, created_at, name, email, jobName, jobDescription, company, userId, files } = await req.json();
+        const { id, created_at, name, email, jobName, jobDescription, company, userId, config, files } = await req.json();
         console.log('files', files);
         const isFiles = files && Object.keys(files).length > 0 ? true : false
-        // let newFiles = files.FileList;
 
-        // upload files to supabase (storage in submission-files bucket)
-        // upload each file separately
-
-        /* EXAMPLE
-        const avatarFile = event.target.files[0]
-        const { data, error } = await supabase
-        .storage
-        .from('avatars')
-        .upload('public/avatar1.png', avatarFile, {
-            cacheControl: '3600',
-            upsert: false
-        })
-        */
-        // console.log('file outside', files);
-        // if (isFiles) {
-        //     for (const key in files) {
-        //         if (files.hasOwnProperty(key)) {
-        //             const file = files[key];
-        //             console.log('KEY', key);
-        //             console.log('FILE', file);
-
-        //             const { data: fileData, error: fileError } = await supabaseClient
-        //                 .storage
-        //                 .from('submission-files')
-        //                 .upload(`submission-${id}/${file.name}`, file, {
-        //                     cacheControl: '3600',
-        //                     upsert: false
-        //                 });
-        //             if (fileError) {
-        //                 throw new Error(fileError.message);
-        //             }
-        //         }
-        //     }
-        // }
-
-
-
-        console.log('Form data:', { id, created_at, name, email, jobName, jobDescription, company, userId, files });
+        console.log('Form data:', { id, created_at, name, email, jobName, jobDescription, company, userId, config, files });
 
         // Insert form data into the 'job-submissions' table
         const { data, error } = await supabaseClient
             .from('job-submissions')
-            .insert([{ id, created_at, name, email, jobName, jobDescription, company, userId, files: isFiles }]);
+            .insert([{ id, created_at, name, email, jobName, jobDescription, company, userId, config, files: isFiles }]);
 
         if (error) {
             throw new Error(error.message);
