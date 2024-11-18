@@ -1,6 +1,7 @@
 import React from 'react'
 import SortSettings from './SortSettings'
-import DownloadButton from './DownloadButton'
+import ButtonWithIcon from './ButtonWithIcon'
+import { ArrowDown } from 'lucide-react'
 
 const JobButtons = () => {
   return (
@@ -8,7 +9,7 @@ const JobButtons = () => {
         className='flex gap-x-2 items-center'
     >
         <SortSettings />
-        <DownloadButton />
+        <ButtonWithIcon icon={ArrowDown} iconSize={6} text="Report" />
     </div>
   )
 }
