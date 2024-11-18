@@ -28,7 +28,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
     // Filter by Submission ID, modify if you want to search by User ID
     const matchingFolder = folderList.find((folder) => 
-      folder.name.slice(-3) === id
+      folder.name.slice(-id.length) === id
     );
 
     if (!matchingFolder) {
