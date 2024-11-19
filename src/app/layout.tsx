@@ -29,7 +29,7 @@ export default function RootLayout({
             <Toaster position="bottom-center" />
             <SupabaseProvider>
             <ModalProvider />
-              {/* <Navbar /> */}
+              <Navbar />
               <ConfigureAmplifyClientSide/>
                 {children}
               <Footer />

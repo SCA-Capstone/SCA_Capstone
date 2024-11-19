@@ -7,14 +7,14 @@ import { PowerIcon } from "@heroicons/react/24/outline";
 import { handleSignOut } from "@/lib/cognito_actions";
 import useAuthUser from '@/app/hooks/auth_user';
 import Image from 'next/image';
+import LogoutForm from '@/app/(main)/(routes)/dashboard/logout_form';
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: false },
-  { name: 'Submit Job', href: '/submit', current: false },
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '/profile' },
   { name: 'Settings', href: 'dashboard/settings' },
-
+  { name: 'Submit Job', href: '/submit', current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -30,9 +30,9 @@ const Navbar = () => {
       ...item,
       current: pathname === item.href,
     }));
-
-  return (
-    <Disclosure as="nav" className="bg-[#45503B]">
+  if (user){
+    return (
+      <Disclosure as="nav" className="bg-[#45503B]">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
@@ -102,12 +102,7 @@ const Navbar = () => {
                     </a>
                   </MenuItem>}
                   <MenuItem key={'Sign Out'}>
-                    <form action={handleSignOut}>
-                      <button className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-                        <PowerIcon className="w-6" />
-                        <div className="hidden md:block">Sign Out</div>
-                      </button>
-                    </form>
+                    <LogoutForm/>
                   </MenuItem>
                 </MenuItems>
               </Menu>
@@ -175,7 +170,45 @@ const Navbar = () => {
         </div>
       </DisclosurePanel>
     </Disclosure>
-  )
+    )
+  }
+  else {
+    return (
+      <Disclosure as="nav" className="bg-[#45503B]">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 justify-between">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <h1
+                  className="text-white font-bold"
+                  role="button"
+                  onClick={() => router.push('/')}
+                >
+                  Capstone SCA
+                </h1>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <button
+                className="flex justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 bg-[#45503B]  shadow-sm hover:bg-[#6C7C59] focus-visible:outline-sky-500 text-white ocus-visible:outline-offset-2"
+                onClick={() => router.push('/auth/sign-in')}
+              >
+                Sign In
+              </button>
+              <button
+                className="flex justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 shadow-sm focus-visible:white border border-white text-white hover:text-white ocus-visible:outline-offset-2"
+                onClick={() => router.push('/auth/sign-up')}
+              >
+                Sign Up
+              </button>
+            </div>
+          </div>
+        </div>
+      </Disclosure>
+
+    )
+  }
+
 }
 
 export default Navbar

@@ -8,7 +8,7 @@ export default function Layout({
     return (
       <section className="min-h-full">
         {/* Include shared UI here e.g. a header or sidebar */}
-        <Navbar/>
+        {/* <Navbar/> */}
    
         {children}
       </section>
