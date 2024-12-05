@@ -1,5 +1,6 @@
 'use client'
-import { PaperClipIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon, BellIcon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
+
 import useAuthUser from '@/app/hooks/auth_user';
 import Image from 'next/image';
 export default function Example() {
@@ -18,12 +19,8 @@ export default function Example() {
             <dt className="text-sm font-medium leading-6 text-gray-900">Profile Picture</dt>
             <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
  
-            <Image // TODO: define imageUrl in user object 
-              alt=""
-              src={user?.picture}
-              width={28}
-              height={28}
-              className="h-28 w-28 rounded-full border-2 border-black" />
+            <UserCircleIcon color="#45503B" className="h-20 w-20 rounded-full bg-white" />
+
   
             </dd>
           </div>

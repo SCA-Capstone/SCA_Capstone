@@ -1,7 +1,7 @@
 'use client'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import {  usePathname, useRouter } from 'next/navigation'
+import { Bars3Icon, BellIcon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
+import { usePathname, useRouter } from 'next/navigation'
 import useAuthUser from '@/app/hooks/auth_user';
 import Image from 'next/image';
 import LogoutForm from './dashboard/logout_form';
@@ -12,7 +12,7 @@ const navigation = [
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '/profile' },
-  { name: 'Settings', href: 'dashboard/settings' }, 
+  { name: 'Settings', href: 'dashboard/settings' },
 ]
 
 function classNames(...classes: string[]) {
@@ -73,13 +73,7 @@ export default function Layout({
                     <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
-                      <Image // TODO: define imageUrl in user object
-                        alt=""
-                        src={user?.imageUrl}
-                        width={8}
-                        height={8}
-                        className="h-8 w-8 rounded-full border-2 border-black"
-                      />
+                      <UserCircleIcon color="#45503B" className="h-8 w-8 rounded-full bg-white" />
                     </MenuButton>
                   </div>
                   <MenuItems
@@ -175,7 +169,7 @@ export default function Layout({
       <section className="min-h-full">
         {children}
       </section>
-      <Footer/>
+      <Footer />
     </>
 
   )
