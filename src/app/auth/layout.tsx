@@ -1,17 +1,18 @@
 "use client";
-import Header from "@/components/Header";
-import { useRouter } from "next/navigation";
-import HomeCardAbout from "@/components/HomeCardAbout";
-import HomeCardTimeline from "@/components/HomeCardTimeline";
-import useAuthUser from "./hooks/auth_user";
+import { Figtree } from "next/font/google";
+import { Disclosure } from '@headlessui/react'
+import { useRouter } from 'next/navigation';
 import Footer from "@/components/Footer";
 
+const font = Figtree({ subsets: ["latin"] });
 
-import { Disclosure } from '@headlessui/react'
-export default function Home() {
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
-  const user = useAuthUser();
-
   return (
     <>
       <Disclosure as="nav" className="bg-[#45503B]">
@@ -45,20 +46,7 @@ export default function Home() {
           </div>
         </div>
       </Disclosure>
-      <Header>
-        <div
-          className="flex flex-col justify-center items-center gap-y-4"
-        >
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-100">Welcome to the U of A PQC Website</h1>
-        </div>
-      </Header>
-      <main
-        className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 mt-12 gap-6-16"
-      >
-        <HomeCardAbout />
-        <HomeCardTimeline />
-
-      </main>
+      {children}
       <Footer />
     </>
   );

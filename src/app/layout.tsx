@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 import { Toaster } from "sonner";
-import Footer from "@/components/Footer";
 import SupabaseProvider from "@/providers/SupabaseProvider";
 import { ConfigureAmplifyClientSide } from "@/components/ConfigureAmplifyClientSide";
 import { ModalProvider } from "@/providers/ModalProvider";
@@ -29,10 +27,8 @@ export default function RootLayout({
             <Toaster position="bottom-center" />
             <SupabaseProvider>
             <ModalProvider />
-              <Navbar />
               <ConfigureAmplifyClientSide/>
                 {children}
-              <Footer />
             </SupabaseProvider>
           </EdgeStoreProvider>
         </body>
