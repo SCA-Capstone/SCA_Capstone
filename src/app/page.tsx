@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import ProcessTable from "./(main)/(routes)/dashboard/_components/ProcessTable";
+import ProcessTable from "./(main)/(routes)/dashboard/_components/JobTable";
 import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
 import HomeCardAbout from "@/components/HomeCardAbout";

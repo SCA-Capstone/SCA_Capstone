@@ -10,7 +10,7 @@ import { Job } from "@/types/Job";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const ProcessTable = () => {
+const JobTable = () => {
     const [isMounted, setIsMounted] = useState(false);
     // interface Job {
     //     id: number;
@@ -53,15 +53,16 @@ const ProcessTable = () => {
         }
     }, [user, fiveSecond]); // Dependency on user
 
-    // useEffect( () => {
-    //     // change the state of fiveSecond every 5 seconds to trigger the useEffect -> call the api for new jobs
-    //     const interval = setInterval(() => {
-    //         console.log("5 seconds passed");
-    //         setFiveSecond(true);
-    //     }, 5000);
+    // 5 SECOND REFRESH FOR DEMO
+    useEffect( () => {
+        // change the state of fiveSecond every 5 seconds to trigger the useEffect -> call the api for new jobs
+        const interval = setInterval(() => {
+            console.log("5 seconds passed");
+            setFiveSecond(true);
+        }, 5000);
 
-    //     return () => clearInterval(interval);
-    // }, [fiveSecond] );
+        return () => clearInterval(interval);
+    }, [fiveSecond] );
 
     if (!isMounted) {
         return null;
@@ -122,7 +123,7 @@ const ProcessTable = () => {
                 >
                     <DashboardItem job={defaultJob}/>
 
-                    
+                    {/* TODO: make this scrollable (make sure to import the right scrollarea) */}
                     {jobs.map((job) => (
                         <DashboardItem job={job} key={job?.id}/>
                     ))}
@@ -167,4 +168,4 @@ const ProcessTable = () => {
     )
 }
 
-export default ProcessTable
+export default JobTable

@@ -16,7 +16,7 @@ const FilesMapScrollArea = ({ files, scrollDirection = "vertical", isSubmissionF
 
   return (
     <div
-        className="w-80 h-48 p-4 bg-white rounded-xl overflow-hidden"
+        className="w-96 h-48 p-4 bg-white rounded-xl overflow-hidden"
     >
         <ScrollArea
             className="w-full h-full"

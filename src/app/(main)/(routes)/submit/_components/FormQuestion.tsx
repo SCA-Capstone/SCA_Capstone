@@ -72,24 +72,24 @@ const FormQuestion = ({title, type, multiple, required, placeholder, enumerate, 
                         className="2xl:flex"
                     >
                         <div
-                            className="flex justify-center items-center mt-6 ml-6 bg-white rounded-xl p-4 w-96 h-48"
+                            className="flex justify-center items-center mt-6 bg-white rounded-xl p-4 w-96 h-48"
                         >
                             <div {...getRootProps()}
                                 className={twMerge(
-                                    `w-full h-full border-2 border-dashed border-gray-300 bg-neutral-100 rounded-md text-center cursor-pointer p-2 hover:bg-neutral-50 transition`,
-                                    isDragActive ? 'border-blue-500 bg-neutral-50' : 'border-gray-300'
+                                    `w-full h-full border-2 border-dashed border-gray-300 bg-neutral-50 rounded-md text-center cursor-pointer p-2 hover:bg-neutral-50 transition`,
+                                    isDragActive ? 'border-blue-500 bg-neutral-100' : 'border-gray-300'
                                 )}
                                 >
                                 <input {...getInputProps()} />
                                 <div
-                                    className="flex justify-center items-center flex-col gap-y-2"
+                                    className="flex h-full justify-center items-center flex-col gap-y-2"
                                 >
                                     <Upload
-                                    size={16}
-                                    className={twMerge(
-                                        `h-16 w-16 text-neutral-500`,
-                                        isDragActive ? 'text-blue-500' : 'text-neutral-500'
-                                    )}
+                                        size={16}
+                                        className={twMerge(
+                                            `h-16 w-16 text-neutral-500`,
+                                            isDragActive ? 'text-blue-500' : 'text-neutral-500'
+                                        )}
                                     />
                                     
                                     <p

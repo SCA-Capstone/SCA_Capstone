@@ -1,6 +1,6 @@
 import useAuthUser from '@/app/hooks/auth_user';
 import Navbar from '@/components/Navbar'
-import ProcessTable from './_components/ProcessTable';
+import JobTable from './_components/JobTable';
 
 export default async function Page() {
 
@@ -17,7 +17,7 @@ export default async function Page() {
         <main>
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 h-full mt-12">
 
-            <ProcessTable />
+            <JobTable />
           </div>
         </main>
       </>

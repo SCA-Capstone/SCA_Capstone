@@ -199,7 +199,7 @@ const SubmissionPage = () => {
 
     return (
         <div className='flex items-center justify-center min-h-screen ml-[10%] mr-[10%] mt-12 overflow-y-auto'>
-        <div className='flex flex-col justify-start items-start w-full bg-[#F3F4F6] mb-12 rounded-[2rem] p-12 overflow-hidden'>
+        <div className='flex flex-col justify-start items-start w-full bg-[#F3F4F6] mb-12 rounded-[2rem] p-12 pb-8 overflow-hidden'>
             <div className='flex w-full h-auto flex-col gap-y-4'>
                 <div className="flex w-full h-10 ">
                     <h1 className='flex items-center justify-center text-5xl md:text-6xl font-semibold'>
@@ -225,7 +225,7 @@ const SubmissionPage = () => {
                                 
                             />
                     ))}
-                    <div className="flex w-full justify-center items-center mt-8">
+                    <div className="flex w-full justify-center items-center mt-16">
                         <button className='bg-blue-500 text-white w-[400px] p-3 rounded-full hover:bg-blue-600 transition tracking-widest' type='submit'>
                             Submit
                         </button>

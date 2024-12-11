@@ -7,6 +7,7 @@ import { Check, Copy, Download } from 'lucide-react';
 import { useJobModal } from '@/hooks/useJobModal';
 import { useRouter } from 'next/navigation';
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Image from 'next/image';
 
 interface FileContentProps {
     selectedFile: ResponseFile | undefined;
@@ -21,6 +22,7 @@ const FileContent = ({ selectedFile }: FileContentProps) => {
     const router = useRouter();
     const copyIcon = isCopied ? Check : Copy;
     const copyText = isCopied ? "Copied" : "Copy";
+    const [isImage, setIsImage] = useState<boolean>(false);
 
     useEffect( () => {
 
@@ -34,7 +36,14 @@ const FileContent = ({ selectedFile }: FileContentProps) => {
         
         if (selectedFile?.publicUrl) {
             console.log("Fetching URL contents...");
-            scrapeUrl(selectedFile.publicUrl);
+            // if the last 4 chars of the publicURL is .txt, then scrape the URL
+            if (selectedFile.publicUrl.slice(-4) === ".txt") {
+                setIsImage(false);
+                scrapeUrl(selectedFile.publicUrl);
+            } else if (selectedFile.publicUrl.slice(-4) === ".png" || selectedFile.publicUrl.slice(-4) === ".jpg") {
+                setUrlContents(selectedFile.publicUrl);
+                setIsImage(true);
+            }
         } else {
             setUrlContents("");
         }
@@ -69,12 +78,22 @@ const FileContent = ({ selectedFile }: FileContentProps) => {
             className='w-full h-full'
         >
         
-        <p
-            className="text-lg font-medium"
-        >
-            {urlContents}
+        {isImage ? (
+            <Image
+                src={urlContents || ""}
+                alt="image"
+                width={175}
+                height={175}
+                className="rounded-xl"
+            />
+        ) : (
+            <p
+                className="text-lg font-medium"
+            >
+                {urlContents}
 
-        </p>
+            </p>
+        )}
         </ScrollArea>
 
         <div
